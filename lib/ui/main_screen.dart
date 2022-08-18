@@ -16,18 +16,6 @@ class _MainScreenState extends State<MainScreen> {
   final _controller = TextEditingController();
 
   @override
-  void initState(){
-    super.initState();
-    Future.delayed(Duration.zero, (){
-      // 한번만 읽기 : old code
-      // final viewModel = Provider.of<ImageSearchViewModel>(context, listen: false);
-      // new code : 특정 이벤트에서 단발성으로 수행하는 경우 read 사용
-      final viewModel = context.read<MainViewModel>();
-      viewModel.fetchImage('');
-    });
-  }
-
-  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -35,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // read는 단발성 특정 이벤트 처리, read는 지속적인 UI 그릴 때 사용
+    // read는 단발성 특정 이벤트 처리, watch는 지속적인 UI 그릴 때 사용
     final viewModel = context.watch<MainViewModel>();
     // 필요한 images data를 빼내서 사용하면 파라미터 넘기지 않아도 됨
     // final image = viewModel.images;

@@ -11,6 +11,10 @@ class MainViewModel extends ChangeNotifier {
   // 로딩
   bool isLoading = false;
 
+  MainViewModel(){
+    fetchImage('');
+  }
+
   void fetchImage(String query) async {
     isLoading = true;
     notifyListeners();
