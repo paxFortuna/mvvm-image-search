@@ -6,20 +6,21 @@ import '../data/model/photo.dart';
 class MainViewModel extends ChangeNotifier {
   // 데이터 저장소
   final _photoRepository = PhotoRepository();
-  // 데이터
-  List<Photo> images = [];
+
+  List<Photo> photos = [];
+
   // 로딩
   bool isLoading = false;
 
-  MainViewModel(){
-    fetchImage('');
+  MainViewModel() {
+    fetchImages('');
   }
 
-  void fetchImage(String query) async {
+  Future<void> fetchImages(String query) async {
     isLoading = true;
     notifyListeners();
 
-    images = await _photoRepository.getImages(query);
+    photos = await _photoRepository.getImages(query);
     isLoading = false;
     notifyListeners();
   }
