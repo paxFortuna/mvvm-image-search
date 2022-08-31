@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvvm_image_search_app/ui/main_action.dart';
 import 'package:mvvm_image_search_app/ui/main_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,14 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text(
           '이미지 검색 앱',
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              viewModel.onAction(MainAction.addAction());
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 suffixIcon: GestureDetector(
                   onTap: () {
-                    viewModel.fetchImages(_controller.text);
+                    viewModel.onAction(MainAction.getImage(_controller.text));
                     // viewModel.fetchImages(_controller.text);
                   },
                   child: const Icon(Icons.search),
@@ -69,22 +78,22 @@ class _MainScreenState extends State<MainScreen> {
               child: viewModel.isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount:
-                  orientation == Orientation.portrait ? 2 : 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                ),
-                children: viewModel.photos.map((Photo image) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      image.previewURL,
-                      fit: BoxFit.cover,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount:
+                            orientation == Orientation.portrait ? 2 : 4,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                      ),
+                      children: viewModel.photos.map((Photo image) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            image.previewURL,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  );
-                }).toList(),
-              ),
             ),
           ),
         ],
