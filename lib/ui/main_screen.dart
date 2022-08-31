@@ -24,8 +24,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<MainViewModel>();
-
     final orientation = MediaQuery.of(context).orientation;
+    final state = viewModel.state;
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              viewModel.onAction(MainAction.addAction());
+              viewModel.onAction(const MainAction.addAction());
             },
             icon: const Icon(Icons.add),
           )
@@ -59,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 suffixIcon: GestureDetector(
                   onTap: () {
-                    viewModel.onAction(MainAction.getImage(_controller.text));
+                    viewModel.onAction(MainAction.getImages(_controller.text));
                     // viewModel.fetchImages(_controller.text);
                   },
                   child: const Icon(Icons.search),
@@ -75,7 +75,8 @@ class _MainScreenState extends State<MainScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: viewModel.isLoading
+              //child: viewModel.isLoading
+              child: state.isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : GridView(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -84,11 +85,12 @@ class _MainScreenState extends State<MainScreen> {
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 10,
                       ),
-                      children: viewModel.photos.map((Photo image) {
+                      //children: viewModel.photos.map((Photo image) {
+                        children: state.photos.map((Photo image){
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.network(
-                            image.previewURL,
+                            image.previewUrl,
                             fit: BoxFit.cover,
                           ),
                         );

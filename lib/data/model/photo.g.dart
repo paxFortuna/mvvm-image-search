@@ -6,12 +6,12 @@ part of 'photo.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Photo _$PhotoFromJson(Map<String, dynamic> json) => Photo(
-      previewURL: json['previewURL'] as String,
+_$_Photo _$$_PhotoFromJson(Map<String, dynamic> json) => _$_Photo(
+      previewUrl: json['previewURL'] as String,
       tags: json['tags'] as String,
     );
 
-Map<String, dynamic> _$PhotoToJson(Photo instance) => <String, dynamic>{
-      'previewURL': instance.previewURL,
+Map<String, dynamic> _$$_PhotoToJson(_$_Photo instance) => <String, dynamic>{
+      'previewURL': instance.previewUrl,
       'tags': instance.tags,
     };
