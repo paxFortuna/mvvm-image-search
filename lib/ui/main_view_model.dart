@@ -10,13 +10,7 @@ import 'package:mvvm_image_search_app/ui/main_state.dart';
 
 class MainViewModel extends ChangeNotifier {
   // 데이터 저장소
-  //final _photoRepository = PhotoRepository();
   late final PhotoRepository _photoRepository;
-
-  //List<Photo> _photos = [];
-  //List<Photo> get photos => UnmodifiableListView(_photos);
-  // 로딩
-  //bool isLoading = false;
 
   MainState _state = const MainState();
 
@@ -29,11 +23,6 @@ class MainViewModel extends ChangeNotifier {
   }
 
   void onAction(MainAction action) {
-    // if (action is AddAction){
-    //   _addAction();
-    // } else if (action is GetImages) {
-    //   _fetchImages(action.query);
-    // }
     action.when(
       getImages: (query) {
         _fetchImages(query);
@@ -44,18 +33,33 @@ class MainViewModel extends ChangeNotifier {
   }
 
   Future<void> _fetchImages(String query) async {
-    // isLoading = true;
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    // _photos = await _photoRepository.getImages(query);
-    // isLoading = false;
-    final photos = await _photoRepository.getImages(query);
-    _state = state.copyWith(
-      photos: photos,
-      isLoading: false,
+    // final photos = await _photoRepository.getImages(query);
+    // _state = state.copyWith(
+    //     photos: photos,
+    //     isLoading: false,
+
+    final result = await _photoRepository.getImages(query);
+    result.when(
+      success: (photos){
+        _state = state.copyWith(
+          photos: photos,
+          isLoading: false,
+        );
+        notifyListeners();
+      },
+      error: (message){
+        _state = state.copyWith(
+          photos: [],
+          isLoading: false,
+        );
+        notifyListeners();
+        print('error!!!! : $message');
+      }
     );
-    notifyListeners();
+    //notifyListeners();
   }
 
   void _addAction() {
