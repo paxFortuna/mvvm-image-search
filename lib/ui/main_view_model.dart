@@ -6,6 +6,7 @@ import 'package:mvvm_image_search_app/data/repository/photo_repository.dart';
 import 'package:mvvm_image_search_app/data/repository/photo_repository_impl.dart';
 import 'package:mvvm_image_search_app/ui/main_action.dart';
 import 'package:mvvm_image_search_app/ui/main_state.dart';
+import 'package:mvvm_image_search_app/ui/main_ui_event.dart';
 
 // import '../data/model/photo.dart';
 
@@ -18,9 +19,11 @@ class MainViewModel extends ChangeNotifier {
   MainState get state => _state;
 
   // 간단한 에러 처리 위한 StreamController
-  final _evenController = StreamController<String>();
+  //final _evenController = StreamController<String>();
+  final _evenController = StreamController<MainUiEvent>();
 
-  Stream<String> get evenStream => _evenController.stream;
+  //Stream<String> get evenStream => _evenController.stream;
+  Stream<MainUiEvent> get evenStream => _evenController.stream;
 
   // 생성자 주입
   MainViewModel({PhotoRepository? photoRepository}) {
@@ -32,7 +35,8 @@ class MainViewModel extends ChangeNotifier {
     action.when(
       getImages: (query) {
         if (query.isEmpty){
-          _evenController.add('검색어를 입력해 주세요');
+          // _evenController.add('검색어를 입력해 주세요');
+          _evenController.add(const MainUiEvent.showDialog('검색어를 입력해주세요'));
           return;
         }
         _fetchImages(query);
@@ -66,11 +70,10 @@ class MainViewModel extends ChangeNotifier {
           isLoading: false,
         );
         notifyListeners();
-        // print('error!!!! : $message');
-        _evenController.add(message);
+        //_evenController.add(message);
+        _evenController.add(MainUiEvent.showSnackBar(message));
       }
     );
-    //notifyListeners();
   }
 
   void _addAction() {
