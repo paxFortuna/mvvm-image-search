@@ -1,24 +1,43 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'photo.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Photo {
-  final int id;
   final String previewURL;
   final String tags;
 
   Photo({
-    required this.id,
     required this.previewURL,
     required this.tags,
-  });
+});
 
-  factory Photo.fromJson(Map<String, dynamic> json) {
-    return Photo(
-      id: json['id'] as int,
-      previewURL: json['previewURL'] as String,
-      tags: json['tags'] as String,
-    );
-  }
+  factory Photo.fromJson(Map<String, dynamic> json) => _$PhotoFromJson(json);
 
-  @override
-  String toString() {
-    return 'Photo{id: $id, previewURL: $previewURL, tags: $tags}';
-  }
+  Map<String, dynamic> toJson() => _$PhotoToJson(this);
 }
+
+// class Photo {
+//   final int id;
+//   final String previewURL;
+//   final String tags;
+//
+//   Photo({
+//     required this.id,
+//     required this.previewURL,
+//     required this.tags,
+//   });
+//
+//   factory Photo.fromJson(Map<String, dynamic> json) {
+//     return Photo(
+//       id: json['id'] as int,
+//       previewURL: json['previewURL'] as String,
+//       tags: json['tags'] as String,
+//     );
+//   }
+//
+//   @override
+//   String toString() {
+//     return 'Photo{id: $id, previewURL: $previewURL, tags: $tags}';
+//   }
+// }
