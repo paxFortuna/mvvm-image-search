@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -16,6 +17,11 @@ class MainViewModel extends ChangeNotifier {
 
   MainState get state => _state;
 
+  // 간단한 에러 처리 위한 StreamController
+  final _evenController = StreamController<String>();
+
+  Stream<String> get evenStream => _evenController.stream;
+
   // 생성자 주입
   MainViewModel({PhotoRepository? photoRepository}) {
     _photoRepository = (photoRepository ?? PhotoRepositoryImpl());
@@ -25,6 +31,10 @@ class MainViewModel extends ChangeNotifier {
   void onAction(MainAction action) {
     action.when(
       getImages: (query) {
+        if (query.isEmpty){
+          _evenController.add('검색어를 입력해 주세요');
+          return;
+        }
         _fetchImages(query);
       },
       addAction: _addAction,
@@ -56,7 +66,8 @@ class MainViewModel extends ChangeNotifier {
           isLoading: false,
         );
         notifyListeners();
-        print('error!!!! : $message');
+        // print('error!!!! : $message');
+        _evenController.add(message);
       }
     );
     //notifyListeners();
